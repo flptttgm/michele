@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Michele's Personal Assistant</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .chat-container {
+        width: 90%;
+        max-width: 500px;
+        background: #222;
+        border: 2px solid red;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-box {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        height: 400px;
+      }
+      .chat-message {
+        margin-bottom: 15px;
+      }
+      .user {
+        text-align: right;
+        color: #ff4d4d;
+      }
+      .bot {
+        text-align: left;
+        color: #ccc;
+      }
+      form {
+        display: flex;
+        border-top: 1px solid #444;
+      }
+      input[type="text"] {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        background: #111;
+        color: white;
+        font-size: 16px;
+      }
+      button {
+        padding: 15px;
+        background: red;
+        border: none;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div id="chatbox" class="chat-box"></div>
+      <form id="chat-form">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Digite sua mensagem..."
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("chat-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const input = document.getElementById("user-input");
+          const userText = input.value;
+          appendMessage("Você", userText, "user");
+          input.value = "";
+
+          const response = await fetch("https://50a9d349-0db5-4398-bae9-c97bd6156cb9-00-pm4bnr22j809.kirk.replit.dev/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: userText }),
+          });
+
+          const data = await response.json();
+          appendMessage("Michele's Assistant", data.reply, "bot");
+        });
+
+      function appendMessage(sender, text, className) {
+        const chatbox = document.getElementById("chatbox");
+        const msg = document.createElement("div");
+        msg.classList.add("chat-message", className);
+        msg.textContent = `${sender}: ${text}`;
+        chatbox.appendChild(msg);
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
+
+<!--
+✅ Personalizado como "Michele's Personal Assistant"
+🎨 Cores: preto, cinza, branco e vermelho
+💡 Altere "https://seu-backend.repl.co/chat" para o seu backend Replit.
+💻 Publique no Vercel ou Replit como orientado antes.
+-->
+
+<!-- Me avise se quiser um backend Node.js pronto para conectar aqui. -->
